@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/App.css';
+import Header from './Header.js';
 import WelcomeText from './WelcomeText.js';
 import ResponseText from './ResponseText.js';
 import EnterSSML from './EnterSSML.js';
@@ -29,6 +30,7 @@ class App extends React.Component {
     return (
       <div id="contact" className="text-center">
         <div className="container">
+          <Header name='Garrett Vargas'/>
           <WelcomeText />
           <Platform initPlatform={this.state.platform} initAudio={this.state.audiocheck} onUpdate={this.onUpdatePlatform.bind(this)} />
           <ResponseText error={this.state.error}/>
