@@ -1,5 +1,6 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
   entry: "./src/ssml.js",
@@ -28,6 +29,10 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/ssml.html"
+    }),
+    new CompressionPlugin({
+      algorithm: "gzip",
+      test: /\.js$|\.css$/,
     })
   ]
 };
