@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class FixedSSML extends React.Component {
   render() {
@@ -13,4 +14,10 @@ class FixedSSML extends React.Component {
   }
 }
 
-export default FixedSSML;
+function mapStateToProps(state) {
+  return {
+    ssml: state.fixed,
+  };
+}
+
+export default connect(mapStateToProps)(FixedSSML);

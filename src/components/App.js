@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import { connect } from 'react-redux';
 import '../styles/App.css';
 import Header from './Header.js';
 import WelcomeText from './WelcomeText.js';
@@ -8,39 +11,57 @@ import FixedSSML from './FixedSSML.js';
 import Button from './Button.js';
 import Platform from './Platform.js';
 
+const initialState = {
+  error: '',
+  fixed: '',
+  ssml: '',
+  platform: 'all',
+  audiocheck: false
+};
+
+function reducer(state = initialState, action) {
+  const newState = Object.assign({}, state);
+
+  switch (action.type) {
+    case 'EXECUTE':
+      newState.error = action.error;
+      newState.fixed = action.fixed;
+      break;
+    case 'UPDATESSML':
+      newState.ssml = action.ssml;
+      break;
+    case 'UPDATEPLATFORM':
+      newState.platform = action.platform;
+      break;
+    case 'UPDATEAUDIO':
+      newState.audiocheck = action.audiocheck;
+    default:
+      break;
+  }
+
+  return newState;
+}
+
+const store = createStore(reducer);
+
 class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {error: '', fixed: '', ssml: '', platform: 'all', audiocheck: false}
-  }
-
-  onUpdateSSML(ssml) {
-    this.setState({ssml: ssml})
-  }
-
-  onUpdateData(data) {
-    this.setState({error: data[0], fixed: data[1]})
-  }
-
-  onUpdatePlatform(data) {
-    this.setState({platform: data[0], audiocheck: data[1]})
-  }
-
   render() {
     return (
-      <div id="contact" className="text-center">
-        <div className="container">
-          <Header name='Garrett Vargas'/>
-          <WelcomeText />
-          <Platform initPlatform={this.state.platform} initAudio={this.state.audiocheck} onUpdate={this.onUpdatePlatform.bind(this)} />
-          <ResponseText error={this.state.error}/>
-          <div className="ssmlColumn">
-            <EnterSSML ssml={this.state.ssml} onUpdate={this.onUpdateSSML.bind(this)} />
-            <FixedSSML ssml={this.state.fixed} />
+      <Provider store={store}>
+        <div id="contact" className="text-center">
+          <div className="container">
+            <Header name='Garrett Vargas'/>
+            <WelcomeText />
+            <Platform />
+            <ResponseText />
+            <div className="ssmlColumn">
+              <EnterSSML />
+              <FixedSSML />
+            </div>
+            <Button />
           </div>
-          <Button data={this.state.data} ssml={this.state.ssml} platform={this.state.platform} audiocheck={this.state.audiocheck} onUpdate={this.onUpdateData.bind(this)} />
         </div>
-      </div>
+      </Provider>
     )
   }
 }

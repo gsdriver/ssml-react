@@ -1,48 +1,46 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class Platform extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {platform: this.props.initPlatform, audiocheck: this.props.initAudio}
-  }
-
   onChangeAmazon() {
-    this.setState({platform: 'amazon'})
-    this.props.onUpdate(['amazon', this.state.audiocheck])
+    this.props.dispatch({type: 'UPDATEPLATFORM', platform: 'amazon'});
   }
 
   onChangeGoogle() {
-    this.setState({platform: 'google'})
-    this.props.onUpdate(['google', this.state.audiocheck])
+    this.props.dispatch({type: 'UPDATEPLATFORM', platform: 'google'});
   }
 
   onChangeAll() {
-    this.setState({platform: 'all'})
-    this.props.onUpdate(['all', this.state.audiocheck])
+    this.props.dispatch({type: 'UPDATEPLATFORM', platform: 'all'});
   }
 
   onChangeAudio() {
-    const checked = !this.state.audiocheck;
+    const checked = !this.props.audiocheck;
 
-    this.setState({audiocheck: checked})
-    console.log(checked)
-    this.props.onUpdate([this.state.platform, checked])
+    this.props.dispatch({type: 'UPDATEAUDIO', audiocheck: checked});
   }
 
   render() {
     return (
       <div>
         <div className="mx-auto">
-          <input type="radio" name="platform" value="amazon" checked={this.state.platform === "amazon"} onChange={this.onChangeAmazon.bind(this)} /> Amazon Alexa
-          <input type="radio" name="platform" value="google" checked={this.state.platform === "google"} onChange={this.onChangeGoogle.bind(this)} /> Google
-          <input type="radio" name="platform" value="all" checked={this.state.platform === "all"} onChange={this.onChangeAll.bind(this)} /> Both
+          <input type="radio" name="platform" value="amazon" checked={this.props.platform === "amazon"} onChange={this.onChangeAmazon.bind(this)} /> Amazon Alexa
+          <input type="radio" name="platform" value="google" checked={this.props.platform === "google"} onChange={this.onChangeGoogle.bind(this)} /> Google
+          <input type="radio" name="platform" value="all" checked={this.props.platform === "all"} onChange={this.onChangeAll.bind(this)} /> Both
         </div>
         <p>
-          <input type="checkbox" name="audiocheck" checked={this.state.audiocheck === true} onChange={this.onChangeAudio.bind(this)} />Validate audio file
+          <input type="checkbox" name="audiocheck" checked={this.props.audiocheck === true} onChange={this.onChangeAudio.bind(this)} />Validate audio file
         </p>
       </div>
     )
   }
 }
 
-export default Platform;
+function mapStateToProps(state) {
+  return {
+    platform: state.platform,
+    audiocheck: state.audiocheck,
+  };
+}
+
+export default connect(mapStateToProps)(Platform);

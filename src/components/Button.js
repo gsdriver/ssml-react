@@ -1,5 +1,6 @@
 const ssmlCheck = require('ssml-check');
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class Button extends React.Component {
   onClick() {
@@ -41,7 +42,7 @@ class Button extends React.Component {
       }
 
       const fixedSSML = (result.fixedSSML) ? result.fixedSSML : errorText;
-      this.props.onUpdate([errorText, fixedSSML])
+      this.props.dispatch({type: 'EXECUTE', error: errorText, fixed: fixedSSML});
     })
   }
 
@@ -56,4 +57,14 @@ class Button extends React.Component {
   }
 }
 
-export default Button;
+function mapStateToProps(state) {
+  return {
+    ssml: state.ssml,
+    error: state.error,
+    fixed: state.fixed,
+    platform: state.platform,
+    audiocheck: state.audiocheck,
+  };
+}
+
+export default connect(mapStateToProps)(Button);

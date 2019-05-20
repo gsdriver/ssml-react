@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class EnterSSML extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {ssml: this.props.ssml}
-  }
-
   handleChange() {
-    this.props.onUpdate(this.refs.ssml.value)
+    this.props.dispatch({type: 'UPDATESSML', ssml: this.refs.ssml.value});
   }
 
   render() {
@@ -20,4 +16,10 @@ class EnterSSML extends React.Component {
   }
 }
 
-export default EnterSSML;
+function mapStateToProps(state) {
+  return {
+    ssml: state.ssml,
+  };
+}
+
+export default connect(mapStateToProps)(EnterSSML);
