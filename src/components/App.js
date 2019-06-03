@@ -52,8 +52,8 @@ class App extends React.Component {
           <div className="container">
             <Header name='Garrett Vargas'/>
             <WelcomeText />
-            <Platform />
             <ResponseText />
+            <Platform />
             <div className="ssmlColumn">
               <EnterSSML />
               <FixedSSML />

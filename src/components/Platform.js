@@ -22,7 +22,7 @@ class Platform extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="platform-form">
         <div className="mx-auto">
           <input type="radio" name="platform" value="amazon" checked={this.props.platform === "amazon"} onChange={this.onChangeAmazon.bind(this)} /> Amazon Alexa
           <input type="radio" name="platform" value="google" checked={this.props.platform === "google"} onChange={this.onChangeGoogle.bind(this)} /> Google

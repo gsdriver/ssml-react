@@ -5,3 +5,12 @@ h1 {
     color: #27aedb;
     text-align: center;
 }
+
+input[type=checkbox] {
+  margin-right: 5px;
+}
+
+input[type=radio] {
+  margin-right: 5px;
+  margin-left: 20px;
+}
