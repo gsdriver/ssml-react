@@ -1,18 +1,22 @@
-const ssmlCheck = require('ssml-check');
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+const qs = require('query-string');
+const apiServer = process.env.SSMLAPI || 'http://localhost:3000';
+import { fetch } from '../utils/httpGet.js';
 
 class Button extends React.Component {
   onClick() {
-    const options = {
+    let url = apiServer + '/ssml?' + qs.stringify({
       platform: this.props.platform,
       validateAudioFiles: this.props.audiocheck,
-    };
+      ssml: this.props.ssml,
+    });
 
-    ssmlCheck.verifyAndFix(this.props.ssml, options)
-    .then((result) => {
+    return fetch(url)
+    .then((text) => {
       // Success message
-      var errorText;
+      const result = JSON.parse(text);
+      let errorText;
       const errors = result.errors;
 
       if (!errors) {

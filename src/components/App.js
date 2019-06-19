@@ -2,14 +2,11 @@ import React, { Component } from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { connect } from 'react-redux';
-import '../styles/App.css';
-import Header from './Header.js';
-import WelcomeText from './WelcomeText.js';
-import ResponseText from './ResponseText.js';
-import EnterSSML from './EnterSSML.js';
-import FixedSSML from './FixedSSML.js';
-import Button from './Button.js';
-import Platform from './Platform.js';
+import { fetch } from '../utils/httpGet.js';
+import { shouldShowPrerenderedPage } from '../utils/preRender.js';
+import Home from '../pages/Home.js';
+import Results from '../pages/Results.js';
+import { Route, HashRouter } from 'react-router-dom';
 
 const initialState = {
   error: '',
@@ -46,21 +43,23 @@ const store = createStore(reducer);
 
 class App extends React.Component {
   render() {
+    // Check for Googlebot
+    if (shouldShowPrerenderedPage(window.location.href)) {
+      fetch('http://localhost:3000/' + window.location.href)
+      .then((result) => {
+        console.log(result);
+        return result;
+      });
+    }
+
     return (
       <Provider store={store}>
-        <div id="contact" className="text-center">
-          <div className="container">
-            <Header name='Garrett Vargas'/>
-            <WelcomeText />
-            <ResponseText />
-            <Platform />
-            <div className="ssmlColumn">
-              <EnterSSML />
-              <FixedSSML />
-            </div>
-            <Button />
+        <HashRouter>
+          <div className="content">
+            <Route path="/" component={Home}/>
+            <Route path="/results" component={Results}/>
           </div>
-        </div>
+        </HashRouter>
       </Provider>
     )
   }
